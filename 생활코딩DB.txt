@@ -1,0 +1,92 @@
+-hlocalhost -> -h(mysql의 주소-> mysql이 설치된 컴퓨터의 주소)
+-uroot -> mysql에 접속할 수 있는 비밀번호가 root라는 의미
+-p -> 비밀번호를 입력받으라는 의미
+
+show databases; -> 데이터베이스를 보여주는 명령어
+
+문법적인 것은 대문자로, 아닌 것(데이터)은 소문자로 적어주는게 좋다
+
+CREATE DATABASE opentutorials CHARACTER SET utf8 COLLATE utf8_general_ci;
+-> 데이터베이스 만들기
+
+ Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| opentutorials      | -> 생성된 것 확인
+| performance_schema |
+| sys                |
+
+mysql> use opentutorials; -> 사용할 데이터베이스 선택
+Database changed
+
+mysql> CREATE TABLE `topic` ( 
+    -> `id` int(11) NOT NULL AUTO_INCREMENT, 
+    -> `title` varchar(100) NOT NULL,
+    -> `description` text NOT NULL,
+    -> `author` varchar(30) NOT NULL,
+    -> `created` datetime NOT NULL,
+    -> PRIMARY KEY(id)
+    -> ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+Query OK, 0 rows affected, 2 warnings (0.17 sec)
+
+NOT NULL -> 반드시 정보를 입력해야한다. 
+AUTO_INCREMENT -> 입력하지않아도 자동으로 1씩 증가한다
+
+mysql> show tables; -> 생성한 테이블 확인
++-------------------------+
+| Tables_in_opentutorials |
++-------------------------+
+| topic                   |
++-------------------------+
+1 row in set (0.02 sec)
+
+mysql> INSERT INTO `topic` (title, description, author, created) 
+-> topic 테이블에 title, description, author, created 행에 정보를 입력하겠다는 의미
+
+mysql> INSERT INTO `topic` (title, description, author, created) VALUES('about javascript', 
+'javascript is ~', 'egoing', '2015-4-10 12:20:5');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM topic; -> 정보를 가져올 테이블 선택
++----+------------------+-----------------+--------+---------------------+
+| id | title            | description     | author | created             |
++----+------------------+-----------------+--------+---------------------+
+|  1 | about javascript | javascript is ~ | egoing | 2015-04-10 12:20:05 |
++----+------------------+-----------------+--------+---------------------+
+
+mysql> SELECT title, author FROM topic;
++------------------+--------+
+| title            | author |
++------------------+--------+
+| about javascript | egoing |
++------------------+--------+
+
+mysql> INSERT INTO `topic` (title, description, author, created) VALUES('variable and constant', 'variable is ~', 'leeSoo', '2020-8-14 11:22:05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM topic;
++----+-----------------------+-----------------+--------+---------------------+
+| id | title                 | description     | author | created             |
++----+-----------------------+-----------------+--------+---------------------+
+|  1 | about javascript      | javascript is ~ | egoing | 2015-04-10 12:20:05 |
+|  2 | variable and constant | variable is ~   | leeSoo | 2020-08-14 11:22:05 |
++----+-----------------------+-----------------+--------+---------------------+
+
+WHERE -> 아이디가 1인 정보를 가져온다
+
+mysql> select id, title from topic WHERE id=1;
++----+------------------+
+| id | title            |
++----+------------------+
+|  1 | about javascript |
++----+------------------+
+
+
+mysql> select id, title from topic ORDER BY id DESC; -> 아이디가 큰 숫자부터 정렬
++----+-----------------------+
+| id | title                 |
++----+-----------------------+
+|  2 | variable and constant |
+|  1 | about javascript      |
++----+-----------------------+
